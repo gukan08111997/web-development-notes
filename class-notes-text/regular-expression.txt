@@ -1,0 +1,15 @@
+. - period/wildcard
++ - one or more
+* - zero or more
+? - optional/zero or one
+() - grouping
+[] - range replacement for 
+{minmax} - minimum and maximum value same
+{min,max} - min and max seperate value
+| - OR operator
+^ - begining
+$ - end of the line
+\ - escape character
+\d - digits
+\w - characters
+\s - space

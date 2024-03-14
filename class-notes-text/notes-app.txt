@@ -1,0 +1,140 @@
+App.jsx
+
+import { useState, useEffect } from "react";
+import Axios from "axios";
+import Note from "./components/Note";
+import "./App.css";
+
+function App() {
+  const [note, setNote] = useState({
+    title: "",
+    content: "",
+  });
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    Axios.get("http://localhost:3000/get").then((response) => {
+      setNotes(response.data);
+    });
+  });
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setNote((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  }
+
+  function addItem() {
+    Axios.post("http://localhost:3000/insert", {
+      title: note.title,
+      content: note.content,
+    }).then(alert("one document inserted successfully"));
+    setNote({
+      title: "",
+      content: "",
+    });
+  }
+  
+
+  return (
+    <>
+      <label htmlFor="title">Title:</label>
+      <input
+        type="text"
+        name="title"
+        value={note.title}
+        onChange={handleChange}
+      />
+      <label htmlFor="content">Content:</label>
+      <textarea
+        name="content"
+        value={note.content}
+        cols="30"
+        rows="10"
+        onChange={handleChange}
+      ></textarea>
+      <button onClick={addItem}>ADD</button>
+      {notes.map(function (item, index) {
+        return (
+         <Note title={item.title} content={item.content} setNote={setNote}/>
+        );
+      })}
+    </>
+  );
+}
+
+export default App;
+
+
+Note.jsx
+
+import { useState } from "react";
+import Axios from "axios";
+export default function Note({ title, content }) {
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [newNote, setNewNote] = useState({
+    title: title,
+    content: content,
+  });
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setNewNote((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  }
+  function updateItem() {
+    Axios.put(`http://localhost:3000/update/${title}`, {
+      title: newNote.title,
+      content: newNote.content,
+    }).then(alert("successfully updated"));
+    setIsUpdate(false);
+  }
+  function handleUpdate() {
+    setIsUpdate(true);
+  }
+  function deleteItem() {
+    Axios.delete(`http://localhost:3000/delete/${title}`).then(
+      alert("successfully deleted")
+    );
+  }
+  return (
+    <>
+      <div>
+        {isUpdate ? (
+          <>
+            <input
+              type="text"
+              name="title"
+              value={newNote.title}
+              onChange={handleChange}
+            />
+            <textarea
+              name="content"
+              id=""
+              cols="30"
+              rows="10"
+              value={newNote.content}
+              onChange={handleChange}
+            ></textarea>
+          </>
+        ) : (
+          <div onClick={handleUpdate}>
+            <h1>{title}</h1>
+            <p>{content}</p>
+          </div>
+        )}
+        {isUpdate ? (
+          <button onClick={updateItem}>Update</button>
+        ) : (
+          <button onClick={deleteItem}>Delete</button>
+        )}
+      </div>
+    </>
+  );
+}

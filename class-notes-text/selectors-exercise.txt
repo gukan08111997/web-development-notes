@@ -1,0 +1,25 @@
+without editing the below code apply different background-color
+<div>
+      <li>list1</li>
+      <p>paragraph1</p>
+      <ul>
+        <li>list2</li>
+        <li>list3</li>
+      </ul>
+      <div>
+        <div>
+            <li>list6</li>
+            <p>paragraph3</p>
+        </div>
+        <ul>
+            <li>list4</li>
+            <p>paragraph2</p>
+            <li>list5</li>
+          </ul>
+      </div>
+      <ul>
+        <li>list7</li>
+        <p>paragraph4</p>
+        <li>list8</li>
+      </ul>
+    </div>

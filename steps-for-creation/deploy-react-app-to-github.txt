@@ -1,0 +1,32 @@
+DEPLOY REACT APPLICATION TO GITHUB 
+
+1.Create the React application using Vite.(see the create react notepad for further steps)
+2.download and install git into your computer. Git bash - for command line - to configure it in vs code, just follow the steps=> View->command Palette->type Select Default Profile->choose Git Bash from the Drop down
+3.npm install --save-dev gh-pages in git bash.
+4.go to git account pages add new repository and  click commit changes without add a readme file.
+
+MAKE CONFIGURATION IN SOURCE FILE
+In package.json file add the following
+in top --> "homepage": "https://gukan08111997.github.io/tic-tac-toe/",
+in scripts -->  "predeploy":"npm run build",
+    "deploy":"gh-pages -d dist",
+
+In vite.config.js file add the following
+in defineConfig function --> base:"/tic-tac-toe/",
+
+5.git init
+6.git add .
+7.git commit -m "initial commit"
+8.git branch -M main
+9.git remote add origin <url>
+10.git push -u origin main
+11.npm run deploy
+12.go to git account page and in actions tab wait for pages and deployment finish
+13.go to settings and pages, there you will have your link.
+
+for updation in git repository
+git add .
+git commit -m "message"
+git push
+npm run deploy
+then updates will reflect in React project

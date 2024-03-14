@@ -1,0 +1,130 @@
+import { useState } from "react";
+
+import "./styles.css";
+
+export default function App() {
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+  const [isValid, setIsValid] = useState({
+    email: false,
+    password: false,
+  });
+  const [isTouched, setIsTouched] = useState({
+    email: false,
+    password: false,
+  });
+  const [info, setInfo] = useState([]);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+    if (name === "email") {
+      if (value.length > 0 && value.includes("@")) {
+        setIsValid((prev) => {
+          return {
+            ...prev,
+            [name]: true,
+          };
+        });
+      } else {
+        setIsValid((prev) => {
+          return {
+            ...prev,
+            [name]: false,
+          };
+        });
+      }
+    }
+    if (name === "password") {
+      if (value.length > 5 && value.includes("$") && value.length < 10) {
+        setIsValid((prev) => {
+          return {
+            ...prev,
+            [name]: true,
+          };
+        });
+      } else {
+        setIsValid((prev) => {
+          return {
+            ...prev,
+            [name]: false,
+          };
+        });
+      }
+    }
+  }
+  function handleClick(event) {
+    setInfo((prev) => [...prev, data]);
+    setData({
+      email: "",
+      password: "",
+    });
+    setIsValid({
+      email: false,
+      password: false,
+    });
+    setIsTouched({
+      email: false,
+      password: false,
+    });
+  }
+  function handleBlur(e) {
+    const { name } = e.target;
+    setIsTouched((prev) => {
+      return {
+        ...prev,
+        [name]: true,
+      };
+    });
+  }
+  const formIsValid = isValid.email && isValid.password;
+  return (
+    <>
+      <h1>hello</h1>
+      <input
+        className={!isValid.email && isTouched.email ? "invalid" : "valid"}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        name="email"
+        type="text"
+        placeholder="email"
+        value={data.email}
+      />
+      {!isValid.email && isTouched.email && <p>you must enter your name</p>}
+
+      <input
+        className={
+          !isValid.password && isTouched.password ? "invalid" : "valid"
+        }
+        onChange={handleChange}
+        onBlur={handleBlur}
+        name="password"
+        type="text"
+        placeholder="password"
+        value={data.password}
+      />
+      {!isValid.password && isTouched.password && (
+        <p>you lengthen 6 to 9 characters with $</p>
+      )}
+      <button onClick={handleClick} disabled={!formIsValid}>
+        Submit
+      </button>
+      {info.map(function (item, index) {
+        return (
+          <>
+            {" "}
+            <li>{item.email}</li>
+            <li>{item.password}</li>
+          </>
+        );
+      })}
+    </>
+  );
+}

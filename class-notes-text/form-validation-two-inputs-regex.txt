@@ -1,0 +1,95 @@
+form validation with 2 inputs and error messages
+
+import { useState } from "react";
+
+export default function Form(){
+    const [data,setData] = useState({
+        firstName:"",
+        email:""
+      });
+      const [biodata,setBioData] = useState([]);
+    const [isValid,setIsValid] = useState({
+      firstName:false,
+      email:false
+    });
+    const [isTouched,setIsTouched] = useState(
+      {
+        firstName:false,
+        email:false
+      }
+    )
+    function handleChange(e){
+      const {name,value} = e.target;
+      setData(prev=>{
+        return{
+          ...prev,
+          [name]:value
+        }
+      })
+      if(name==="firstName"){
+        if(value.length>0){
+          setIsValid(prev=>{
+            return{
+              ...prev,
+              [name]:true
+            }
+          })
+        }else{
+          setIsValid(prev=>{
+            return{
+              ...prev,
+              [name]:false
+            }
+          })
+        }
+      }
+      if(name==="email"){
+        const pattern = new RegExp("[a-z0-9]{10,15}@[a-z]{5,7}\.[a-z]{2,3}","g");
+        if(value.length>0 && pattern.test(value)){
+          setIsValid(prev=>{
+            return{
+              ...prev,
+              [name]:true
+            }
+          })
+        }else{
+          setIsValid(prev=>{
+            return{
+              ...prev,
+              [name]:false
+            }
+          })
+        }
+      }
+    }
+    function handleBlur(e){
+      const {name} = e.target;
+      setIsTouched(prev=>{
+        return{
+          ...prev,
+          [name]:true
+        }
+      })
+    }
+    function handleSubmit(e){
+      e.preventDefault();
+      setBioData(prev=>[...prev,data]);
+      
+      setData({
+        firstName:"",
+        email:""
+      });
+    }
+    const formIsValid = (isValid.firstName && isValid.email );
+    return<>
+     <form action="" onSubmit={handleSubmit}>
+        <input type="text" name="firstName" value={data.firstName} onChange={handleChange} onBlur={handleBlur} />
+{(!isValid.firstName&&isTouched.firstName)&&<p>you should enter this field</p>}
+        <input type="email" name="email" value={data.email} onChange={handleChange} onBlur={handleBlur} />
+{(!isValid.email&&isTouched.email)&& <p>email must be email format = example@gmail.com</p>}
+<button type="submit" disabled={!formIsValid}>Submit</button>
+      </form>
+      {biodata.map(element=><li>{element.firstName},{element.email}</li>)}
+    
+    </>
+}

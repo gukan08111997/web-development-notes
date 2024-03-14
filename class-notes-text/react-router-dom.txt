@@ -1,0 +1,214 @@
+App.jsx
+
+import { RouterProvider,createBrowserRouter } from 'react-router-dom';
+import WelcomePage from './pages/Welcome';
+import Template from "./components/Template";
+import Login from './components/Login';
+import Register from './components/Register';
+import Failure from './pages/Failure';
+import Error from './pages/Error';
+import RootHome from './components/RootHome';
+import ProductsDetail from './components/ProductsDetail';
+import './App.css'
+
+const router = createBrowserRouter([
+  {
+    path:"/",
+    element:<WelcomePage/>,
+    errorElement:<Error />
+  },{
+    path:"/login",
+    element:<Login />
+  },{
+    path:"/register",
+    element:<Register />
+  },{
+    path:"/failure",
+    element:<Failure>Sorry you crendentials didn't match with our record</Failure>
+  },{
+    path:"/success",
+    element:<Failure>Congratulations</Failure>
+  },
+  {
+    path:"/home",
+    element:<RootHome />,
+    children:[{
+      index:true,
+      element:<Template title="Gukan Home Page" content="This is the Gukan's Page" isHome={true}/>
+    },{
+      path:"products",
+      element:<Template title="Product Home Page" content="This is the product Page" isHome={false} />
+    },{
+      path:"products/:productId",
+      element:<ProductsDetail />
+    }]
+  },{
+    path:"/admin",
+    element:<Template title="Admin HomePage" content="This is the Admin Page"  />
+  }
+])
+
+function App() {
+
+
+  return (
+    <>
+     <RouterProvider router={router} />
+    </>
+  )
+}
+
+export default App
+
+
+----------------------------------------------------
+Welcome.jsx
+
+import {Link} from "react-router-dom";
+export default function WelcomePage(){
+    return<>
+    <h1>Welcome to My Application</h1>
+    <Link to="/login" style={{marginRight:"50px"}} >Login</Link>
+    <Link to="/register" >Register</Link>
+    </>
+}
+
+------------------------------------------------------
+Template.jsx
+
+import { Link } from "react-router-dom";
+const array = ["Television","Laptop","Chair"];
+export default function Template({ title, content, isHome }) {
+  return (
+    <>
+      {isHome ? (
+        <Link to="/home/products">Products</Link>
+      ) : (
+        <>
+         {array.map((element,index)=><Link style={{
+            display:"block"
+         }} to={`/home/products/${element}`}>{element}</Link>)}
+          <Link to="..">GoBack</Link>
+        </>
+      )}
+      <h1>{title}</h1>
+      <p>{content}</p>
+    </>
+  );
+}
+
+
+--------------------------------------------------------
+Register.jsx
+
+import {useNavigate} from "react-router-dom";
+export default function Register() {
+const date = new Date();
+const navigate = useNavigate();
+
+  function handleSubmit(e){
+    e.preventDefault();
+navigate("/success");
+alert("congrats");
+  }
+  return (
+    <><form onSubmit={handleSubmit}> 
+      <input type="text" placeholder="userName" required/>
+      <input type="text" placeholder="Mobile" pattern="\d{10}" required />
+      <input type="date" min="1980-01-01" max={`${date.getFullYear()}-0${date.getMonth()+1}-${date.getDate()}`} />
+      <input type="email" placeholder="userMail" required />
+      <input type="password" placeholder="Passwrd" required />
+      <button>Register</button>
+      </form>
+    </>
+  );
+}
+
+ ----------------------------------------------------
+Login.jsx
+
+import {useState} from "react";
+import { useNavigate } from "react-router-dom";
+export default function Login() {
+  const [data,setData] = useState({
+    email:"",
+    password:""
+  });
+ 
+  const navigate = useNavigate();
+  function handleChange(e){
+    const {name,value} = e.target;
+    setData(prev=>{
+      return{
+        ...prev,
+        [name]:value
+      }
+    })
+  }
+  function handleClick(){
+if(data.email==="user@gmail.com"&&data.password==="user"){
+  navigate("/home");
+}else if(data.email==="admin@gmail.com"&&data.password==="admin"){
+  navigate("/admin");
+}else{
+  navigate("/failure");
+}
+  }
+
+  return (
+    <>
+      
+      <input type="email" name="email" placeholder="userMail" value={data.email} onChange={handleChange}/>
+      <input type="password" name="password" placeholder="Password" value={data.password} onChange={handleChange} />
+    <button onClick={handleClick}>Login</button>
+    </>
+  );
+}
+-------------------------------------------------
+Error.jsx
+
+import {Link} from "react-router-dom";
+
+export default function Error(){
+    return<>
+    <h1>sorry for Inconvenient</h1>
+    <Link to="/">Return to home Page</Link>
+    </>
+}
+
+----------------------------------------------------
+Failure.jsx
+
+import{Link} from "react-router-dom";
+export default function Failure({children}){
+    return<>
+    <h1>{children}</h1>
+<Link to="/">Return to home</Link>
+    </>
+}
+
+----------------------------------------------------
+ProductsDetail.jsx
+
+import { useParams,Link } from "react-router-dom";
+export default function ProductsDetail(){
+    const params = useParams();
+    return<>
+    <h1>this is the {params.productId} deatils page</h1>
+    <Link to=".." relative="path">Go Back</Link>
+    </>
+}
+
+----------------------------------------------------
+RootHome.jsx
+
+import {Outlet} from "react-router-dom";
+export default function RootHome(){
+    return<>
+     
+    <h1>Welcome to User Home Page</h1>
+    <Outlet />
+    </>
+}
+
+-----------------------------------------------------

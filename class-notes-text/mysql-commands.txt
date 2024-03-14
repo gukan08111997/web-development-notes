@@ -1,0 +1,33 @@
+create database students;
+use students;
+create table students (id int not null auto_increment,name varchar(50),primary key (id));
+insert into students (name) values ("gukan");
+insert into students (name) values ("std1"),("std2"),("std3");
+select * from students;
+update students set name="vinoth" where id=2;
+update students set team_id = 1 where id in (1,2,3);
+delete from students where name = "std3";
+alter table students rename column name to std_name;
+alter table students modify std_name varchar(25) not null;
+update students set mobile=1234567890 where id in (1,2,3);
+alter table students add mobile int(10) not null;
+alter table students drop column mobile;
+create table teams (id int not null auto_increment,team varchar(30),primary key(id));
+insert into teams (team) values ("bio-maths");
+alter table students add team_id int not null;
+alter table students add constraint std_id_fk foreign key(team_id) references teams (id) on update cascade;
+select * from students s join teams t on s.team_id = t.id where t.id=1; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

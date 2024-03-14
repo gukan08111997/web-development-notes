@@ -1,0 +1,50 @@
+ import { useState } from "react";
+import List from "./component/List";
+import "./styles.css";
+
+export default function App() {
+  const [email, setEmail] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const [isTouched, setIsTouched] = useState(false);
+  const [info, setInfo] = useState([]);
+
+  function handleChange(event) {
+    const { value } = event.target;
+    setEmail(value);
+    if (value.length > 0 && value.includes("@")) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }
+  function handleClick(event) {
+    setInfo((prev) => [...prev, email]);
+  }
+  function handleBlur() {
+    setIsTouched(true);
+  }
+  return (
+    <>
+      <h1>hello</h1>
+      <input
+        className={!isValid && isTouched ? "invalid" : "valid"}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        name="email"
+        type="text"
+        placeholder="email"
+        value={email}
+      />
+      {!isValid && isTouched && <p>you must enter your name</p>}
+
+     
+
+      <button onClick={handleClick} disabled={!isValid}>
+        Submit
+      </button>
+      {info.map(function (item, index) {
+        return <li>{item}</li>;
+      })}
+    </>
+  );
+}

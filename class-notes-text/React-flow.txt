@@ -1,0 +1,38 @@
+React features introduction in ppt
+Introduction about React,React-dom,build-process,rendering with react-dom and without react-dom. 
+
+1.React dynamic content in JSX
+	i.inserting js variable into HTML element.
+2.DATE constructor function and conditional rendering practice
+3.Inline styling of react element practice
+	i.dynamic year @ copyright
+	ii.good morning, evening and afternoon render based on current time with diff colours.
+	iii.form input rendering for register and login based on login status.
+4.Import and Export modules and data
+	i.mapping data from another file into multiple card using single div code only(reusable)
+5.Custom functional Components in same APP.js file
+6.different ways of passing props to components.
+7.Customizable dynamic functional component using props in seperate component file and data for the props from another file.
+8.component composition using CHILDREN prop difference b/w <Card /> and <Card></Card>.
+9.how to not update the UI? why to avoid normal variable in React?
+10.Managing State and Hooks concept.
+	i.counter with increment and decrement
+	ii.strike and unstrike the heading
+	iii.Alert message shown after DELETE button pressed and alert disappears after PROCEED button pressed(conditional rendering and useState)
+11.Event listeners and its functionality.
+	i.showing user entered data in UI with single input and multiple input(different handle function and different state variable).
+	ii.multiple input with same handle function and complex state variable(arrays and objects).
+12.form validation
+	i.error message and styling the input for error in single input.
+	ii.for more than one input
+	iii.using custom hooks.
+13.building the Notes taking application and deploying in Github.
+14.React router DOM and SPA concepts.
+	i.using createBrowserRouter and RouterProvider for SPA.
+	ii.useNavigate hook to switch between pages conditionally.
+	iii.add pages for admin and user using children property.
+15.React API concept using Axios library.
+	
+
+
+

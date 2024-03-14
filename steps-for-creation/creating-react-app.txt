@@ -1,0 +1,16 @@
+Creating the React Application
+In the New Folder => npx create-react-app Folder-name
+In the Existing Folder => npx create-react-app .
+
+To start the development Environment => npm start
+
+                   OR
+
+Using Vite
+1.npm create vite@latest
+2.give the project folder name
+3.select the FrameWork and Scripting Language
+4.cd to that project folder
+5.npm install -> to install node modules
+6.npm run dev -> to run development environment.
+ 

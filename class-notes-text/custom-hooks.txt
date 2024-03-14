@@ -1,0 +1,83 @@
+App.jsx
+
+import "./styles.css";
+import useInput from "./hooks/use-input";
+
+export default function App() {
+  const {
+    handleChange: emailHandleChange,
+    handleBlur: emailHandleBlur,
+    isValid: emailIsValid,
+    isTouched: emailIsTouched,
+    enteredValue: email,
+  } = useInput(function (value) {
+    let pattern = new RegExp("[a-z0-9]{10,15}@[a-z]{5,7}.[a-z]{2,3}");
+    return pattern.test(value);
+  });
+  const {
+    handleChange: passwordHandleChange,
+    handleBlur: passwordHandleBlur,
+    isValid: passwordIsValid,
+    isTouched: passwordIsTouched,
+    enteredValue: password,
+  } = useInput(
+    (value) => value.length > 5 && value.length < 10 && value.includes("$")
+  );
+
+  const formIsValid = emailIsValid && passwordIsValid;
+  return (
+    <>
+      <h1>hello</h1>
+      <input
+        className={!emailIsValid && emailIsTouched ? "invalid" : "valid"}
+        onChange={emailHandleChange}
+        onBlur={emailHandleBlur}
+        name="email"
+        type="text"
+        placeholder="email"
+        value={email}
+      />
+      {!emailIsValid && emailIsTouched && <p>you must enter your name</p>}
+
+      <input
+        className={!passwordIsValid && passwordIsTouched ? "invalid" : "valid"}
+        onChange={passwordHandleChange}
+        onBlur={passwordHandleBlur}
+        name="password"
+        type="text"
+        placeholder="password"
+        value={password}
+      />
+      {!passwordIsValid && passwordIsTouched && (
+        <p>you lengthen 6 to 9 characters with $</p>
+      )}
+      <button disabled={!formIsValid}>Submit</button>
+    </>
+  );
+}
+
+
+
+
+useInput.js
+
+import { useState } from "react";
+export default function useInput(validation) {
+  const [enteredValue, setEnteredValue] = useState("");
+  const [isTouched, setIsTouched] = useState(false);
+  const isValid = validation(enteredValue);
+
+  function handleChange(e) {
+    setEnteredValue(e.target.value);
+  }
+  function handleBlur() {
+    setIsTouched(true);
+  }
+  return {
+    handleChange,
+    handleBlur,
+    enteredValue,
+    isTouched,
+    isValid,
+  };
+}

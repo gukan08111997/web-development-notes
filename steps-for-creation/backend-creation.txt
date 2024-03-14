@@ -1,0 +1,66 @@
+FOR BACKEND SERVER
+
+SOFTWARE NEED TO INSTALL
+MongoDB community server
+Mongo shell
+Node
+Git bash
+Mysql 
+
+STEPS TO INSTALL THE BACKEND
+open git-bash 
+mkdir <folder>
+cd <folder>
+npm init -y   --> to initialize the package.json file with all default values
+touch server.js  --> to create the server file
+npm install express body-parser mongoose mongodb mysql nodemon -->depends on requirement
+In package.json file add <"start":"node server.js", "dev":"nodemon server.js",> to scripts 
+
+const express = require("express");
+const app = express();
+
+app.get("/",function(request,response){
+    response.send("hello world");
+})
+
+app.listen(3000,()=>console.log("successfully listening to the port 3000"));
+
+save it and start the server using 0
+npm run dev --> command to start the server using nodemon
+
+STEPS TO CONNECT TO MONGODB USING MONGOOSE
+1.start the MongoDB compass and connect to database
+2.start the mongo shell and enter when shell opens
+3.start the mongodb server using mongod command
+
+
+const express = require("express");
+const mongoose = require("mongoose");
+const app = express();
+mongoose.connect("mongodb://localhost:27017/fruitsDB");
+
+const fruitSchema = new mongoose.Schema({
+    name:String,
+    count:Number
+});
+
+const Fruit = mongoose.model("Fruit",fruitSchema);
+
+const fruit = new Fruit({
+    name:"banana",
+    count:5
+});
+
+fruit.save();
+
+
+app.get("/",function(request,response){
+ 
+    Fruit.find({name:"banana"}).then((fruits)=>{
+        response.send(fruits);
+    })
+})
+
+app.listen(3000,()=>console.log("successfully listening to the port 3000"));
+
+
